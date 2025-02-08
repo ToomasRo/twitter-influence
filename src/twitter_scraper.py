@@ -2,41 +2,46 @@ import requests
 import json
 import os
 
+import dotenv
+import os 
+
+dotenv.load_dotenv()
+
+
 url = "https://apis.datura.ai/twitter"
-api_key = "dt_$LSO2gvfJtB6UENHrgs-SS1w0zfSKmAr1gfkbBRmTkIg"
+api_key = os.getenv("DATURA_API_KEY")
 crypto_tickers = ["BTC", "ETH", "BNB", "SRP", "TORUS"]
-headers = {
-    "Authorization": api_key,
-    "Content-Type": "application/json"
-}
+headers = {"Authorization": api_key, "Content-Type": "application/json"}
+
 
 ### scrape twitter
 ### returns a json containing top 18/19 tweets
-def scrape_twitter(ticker, start_date = "2025-02-01", end_date = "2025-02-02"):
+def scrape_twitter(ticker, start_date="2025-02-01", end_date="2025-02-02"):
     payload = {
-        "query": ticker+" -send -address -receive",
+        "query": ticker + " -send -address -receive",
         "sort": "Top",
         "start_date": start_date,
         "end_date": end_date,
         "lang": "en",
         "min_retweets": 1,
         "min_replies": 20,
-        "min_likes": 1
+        "min_likes": 1,
     }
     response = requests.request("POST", url, json=payload, headers=headers)
     scraped_tweets = json.loads(response.text)
     return scraped_tweets
 
+
 ### gets up to 20 replies associated with a certain tweet by finding tweets of matching converstation_id
 ### returns a list of dictionary containing replied user and the reply text
-def get_replies(conversation_id, start_date = "2025-02-01", end_date = "2025-02-02"):
+def get_replies(conversation_id, start_date="2025-02-01", end_date="2025-02-02"):
     replies = []
     payload = {
-        "query": "conversation_id:"+str(conversation_id),
+        "query": "conversation_id:" + str(conversation_id),
         "sort": "Top",
         "start_date": start_date,
         "end_date": end_date,
-        "lang": "en"
+        "lang": "en",
     }
     response = requests.request("POST", url, json=payload, headers=headers)
     scraped_tweets = json.loads(response.text)
@@ -45,28 +50,53 @@ def get_replies(conversation_id, start_date = "2025-02-01", end_date = "2025-02-
         replies.append(reply)
     return replies
 
+
 ### emits unneeded data in json and adds replies for each tweet
 ### returns json containing list of hot tweets with their top replies
-def filter_data(data, start_date = "2025-02-01", end_date = "2025-02-02"):
+def filter_data(data, start_date="2025-02-01", end_date="2025-02-02"):
     list_of_tweets = []
     for i in range(len(data)):
-        new_user_dict = {"id":data[i]["user"]["id"], "name": data[i]["user"]["name"], "username": data[i]["user"]["username"], "followers_count": data[i]["user"]["followers_count"]}
-        new_dict = {"user": new_user_dict, "text": data[i]["text"], "reply_count": data[i]["reply_count"], "retweet_count": data[i]["retweet_count"], "like_count": data[i]["like_count"], "quote_count": data[i]["quote_count"], "created_at": data[i]["created_at"], "replies": get_replies(data[i]["conversation_id"], start_date, end_date)}
+        new_user_dict = {
+            "id": data[i]["user"]["id"],
+            "name": data[i]["user"]["name"],
+            "username": data[i]["user"]["username"],
+            "followers_count": data[i]["user"]["followers_count"],
+        }
+        new_dict = {
+            "user": new_user_dict,
+            "text": data[i]["text"],
+            "reply_count": data[i]["reply_count"],
+            "retweet_count": data[i]["retweet_count"],
+            "like_count": data[i]["like_count"],
+            "quote_count": data[i]["quote_count"],
+            "created_at": data[i]["created_at"],
+            "replies": get_replies(data[i]["conversation_id"], start_date, end_date),
+        }
         list_of_tweets.append(new_dict)
     return list_of_tweets
-   
-date = ["2024-01-01", "2024-01-02"]   
-    
+
+
+date = ["2024-01-01", "2024-01-02"]
+
+
 def scrape_twitter_2024(output_file="scraped_data.json"):
     all_tweets = []
-    for i in range(len(date)-1):
+    for i in range(len(date) - 1):
         for ticker in crypto_tickers:
             start_date = date[i]
-            end_date = date[i+1]
+            end_date = date[i + 1]
             scraped_data = scrape_twitter(ticker, start_date, end_date)
             filtered_scraped_data = filter_data(scraped_data, start_date, end_date)
-            all_tweets.append({"ticker": ticker, "start_date": start_date, "tweets": filtered_scraped_data})
+            all_tweets.append(
+                {
+                    "ticker": ticker,
+                    "start_date": start_date,
+                    "tweets": filtered_scraped_data,
+                }
+            )
             with open(output_file, "w") as f:
                 json.dump(all_tweets, f, indent=4)
-            
-scrape_twitter_2024()
+
+
+if __name__ == "__main__":
+    scrape_twitter_2024()
