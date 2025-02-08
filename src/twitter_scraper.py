@@ -79,7 +79,7 @@ def filter_data(data, start_date="2025-02-01", end_date="2025-02-02"):
 date = ["2024-01-01", "2024-01-02"]
 
 
-def scrape_twitter_2024(output_file="scraped_data.json"):
+def scrape_twitter_2024(output_file="data/scraped_data.json"):
     all_tweets = []
     for i in range(len(date) - 1):
         for ticker in crypto_tickers:
