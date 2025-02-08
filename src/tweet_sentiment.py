@@ -132,5 +132,12 @@ if __name__ == "__main__":
     with open("data/scraped_data.json", "r") as f:
         sample_tweets = json.load(f)
 
-    results = process_tweet_sentiments(sample_tweets[0])
-    print(results)
+    # for example the BTC one:
+    for grouping in sample_tweets:
+        if grouping["ticker"] != "BTC":
+            continue
+        
+        for tweet in grouping["tweets"]:
+            results = process_tweet_sentiments(tweet)
+            print(results)
+            
