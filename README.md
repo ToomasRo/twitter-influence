@@ -51,3 +51,12 @@ Once the server is running, you can access the API documentation at:
 - Swagger UI: `http://localhost:8000/docs`
 
 ## Architecture
+
+## Data Collection
+
+## Sentiment Analysis
+
+## Scoring Algorithm
+
+## Debate Analyser
+
