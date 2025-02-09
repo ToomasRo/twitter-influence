@@ -79,6 +79,7 @@ We use factors including the following:
 - accuracy: taken from sentiment analysis
 - debate_quality: reflects the quality and diversity of the debate, for instance no replies result in a score of 0, while higher debate_quality scores result from a larger number of replies and more vibrant debate.
 
+Recent data are given more value than old data by using a decay factor.
 The users are ranked and stored in reputation_data.csv along with their respective reputation,engagement,accuracy,debate_quality scores.
 
 ## Debate Summariser
