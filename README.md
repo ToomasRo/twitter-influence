@@ -64,5 +64,9 @@ These scraped daily top tweets for each ticker, containing its top replies are s
 
 ## Scoring Algorithm
 
-## Debate Analyser
+## Debate Summariser
+
+We use Open AI’s API with GPT-4 to summarize debates on Twitter for different coins. 
+
+First, we clean the tweets that we wish to summarize, and extract parameters that are relevant for summaries, such as the reputation scores associated with the original poster and with those who have replied. We generate custom prompts depending on the currency, instructing OpenAI to use the additional fields supplied, such as reputation scores. We make an API call to return the summary of the tweet feed.
 
