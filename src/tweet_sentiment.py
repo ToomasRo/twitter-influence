@@ -65,7 +65,7 @@ def get_sentiment(text):
         tuple: (label, score) where label is one of "positive", "negative", or "neutral"
                and score is the confidence score.
     """
-    result = sentiment_analyzer(text)[0]
+    result = sentiment_analyzer(text[:300])[0]
     # Normalize the label to lowercase.
     label = result["label"].lower()
     return label, result["score"]
@@ -98,7 +98,10 @@ def process_tweet_sentiments(tweet):
         for currency in currencies_mentioned
     }
     labels = {"label_0": "negative", "label_1": "neutral", "label_2": "positive"}
-
+    
+    post_label, score = get_sentiment(tweet_text)
+    post_sentiment = (tweet["user"]["username"], tweet_text, score, labels[post_label])
+    
     for reply in replies:
         reply_text = reply["text"]
         username = reply["username"]
@@ -124,7 +127,7 @@ def process_tweet_sentiments(tweet):
                     (username, reply_text, score)
                 )
 
-    return currency_sentiments
+    return post_sentiment, currency_sentiments
 
 
 if __name__ == "__main__":
