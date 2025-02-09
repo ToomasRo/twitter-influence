@@ -54,7 +54,18 @@ def summarize_debate(u: str = "latest"):
         )
         tweet = tweetssorted[-1]
     # enrich the the usernames with reputation
-
+    for reply in tweet["replies"]:
+        matching_users = top_users_df[top_users_df["author"] == reply["username"]]
+        if not matching_users.empty:
+            reply["reputation"] = matching_users["reputation"].values[0]
+        else:
+            reply["reputation"] = -1  # Default value for users not in database
+    
+    matching_usersauthor = top_users_df[top_users_df["author"] == reply["username"]]
+    if not matching_usersauthor.empty:
+        tweet["reputation"] = matching_usersauthor["reputation"].values[0]
+    else:
+        tweet["reputation"] = -1
     # TODO send to openai to put it together.
     return tweet
 
