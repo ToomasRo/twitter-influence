@@ -59,8 +59,6 @@ uvicorn src.api:app --reload
 Once the server is running, you can access the API documentation at:
 - Swagger UI: `http://localhost:8000/docs`
 
-## Architecture
-
 ## Data Collection
 
 Using Twitter API, the top 20 posts per ticker were scraped from Twitter for each day in 2024. Our chosen tickers were BTC, ETH, BNB, XRP, TORUS, and the query sent to Twitter API searched top posts for these tickers one by one while excluding posts that include the words “send”, “address”, and “receive” (This was done to exclude posts that asked for ‘likes/replies’ in trade of a chance of winning 1BTC, etc).
@@ -76,10 +74,10 @@ For analyzing the sentiment of the tweets (in scraped_data.json), we use cardiff
 ## Scoring Algorithm
 
 We use factors including the following: 
-reputation: a user’s reputation is a combination of final score given by combining norm_engagement, accuracy, and debate_quality
-norm_engagement: engagement is a normalized score for the reply_count, like_count, and retweet_count
-accuracy: taken from sentiment analysis
-debate_quality: reflects the quality and diversity of the debate, for instance no replies result in a score of 0, while higher debate_quality scores result from a larger number of replies and more vibrant debate.
+- reputation: a user’s reputation is a combination of final score given by combining norm_engagement, accuracy, and debate_quality
+- norm_engagement: engagement is a normalized score for the reply_count, like_count, and retweet_count
+- accuracy: taken from sentiment analysis
+- debate_quality: reflects the quality and diversity of the debate, for instance no replies result in a score of 0, while higher debate_quality scores result from a larger number of replies and more vibrant debate.
 
 The users are ranked and stored in reputation_data.csv along with their respective reputation,engagement,accuracy,debate_quality scores.
 
