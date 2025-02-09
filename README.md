@@ -62,6 +62,8 @@ These scraped daily top tweets for each ticker, containing its top replies are s
 
 ## Sentiment Analysis
 
+For analyzing the sentiment of the tweets (in scraped_data.json), we use cardiffnlp’s twitter-roberta-base-sentiment model.If the sentiment detected in the tweet matches the market movement (ie. positive sentiment && market going up), then we give it a good score. If there is a mismatch, we give it a bad score. The same logic is applied to the reptiles, where the diverse opinions are rewarded with a good score.
+
 ## Scoring Algorithm
 
 ## Debate Summariser
