@@ -54,6 +54,12 @@ Once the server is running, you can access the API documentation at:
 
 ## Data Collection
 
+Using Twitter API, the top 20 posts per ticker were scraped from Twitter for each day in 2024. Our chosen tickers were BTC, ETH, BNB, XRP, TORUS, and the query sent to Twitter API searched top posts for these tickers one by one while excluding posts that include the words “send”, “address”, and “receive” (This was done to exclude posts that asked for ‘likes/replies’ in trade of a chance of winning 1BTC, etc).
+
+Then, for each of these top posts, the 20 top replies to the post were found by using Twitter API to query top posts with matching conversation ID.
+
+These scraped daily top tweets for each ticker, containing its top replies are stored in scraped_data.json and would be updated daily in the future.
+
 ## Sentiment Analysis
 
 ## Scoring Algorithm
