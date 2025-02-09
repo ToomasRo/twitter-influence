@@ -28,6 +28,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root and add:
 ```
 DATURA_API_KEY=your_twitter_api_key
+LLM_API_KEY=your_llm_api_key
 ```
 (Just copy the file `.env.EXAMPLE`, rename it to `.env` and populate it)
 
@@ -37,7 +38,7 @@ DATURA_API_KEY=your_twitter_api_key
 ```bash
 uvicorn src.api:app --reload
 ```
-(or `python3 -m uvicorn src.api:app --reload`)
+(or `python3.13 -m uvicorn src.api:app --reload`)
 
 ## API Endpoints
 

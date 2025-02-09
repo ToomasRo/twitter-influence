@@ -88,12 +88,17 @@ def generate_dates_in_2024():
 
 
 def scrape_twitter_2024(output_file="scraped_data.json"):
-    date = generate_dates_in_2024()
+    # date = generate_dates_in_2024()
+    curr_time = datetime.now().strftime("%d/%m/%Y %H.%M.%S")
+    output_file=f"scraped_data.{curr_time}.json"
+    first_2024_date = datetime.date(2024, 1, 1)
     all_tweets = []
-    for i in range(len(date)-1):
+    for i in range(365):
+        start_date = first_2024_date + datetime.timedelta(days=i) # date[i]
+        end_date = first_2024_date + datetime.timedelta(days=i+1) # date[i+1]
         for ticker in crypto_tickers:
-            start_date = date[i]
-            end_date = date[i+1]
+            # start_date = date[i]
+            # end_date = date[i+1]
             scraped_data = scrape_twitter(ticker, start_date, end_date)
             filtered_scraped_data = filter_data(scraped_data, start_date, end_date)
             all_tweets.append(

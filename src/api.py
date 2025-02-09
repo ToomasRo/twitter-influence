@@ -3,18 +3,21 @@ import pandas as pd
 import uvicorn
 from .get_5_latest import get_latest_top_posts
 import json
+from .summary_generator import generate_summary, generate_multiple_summaries
 
+
+scraped_data_json = "./data/scraped_data.json"
 
 top_users_df = pd.read_csv("./data/reputation_data.csv")
 app = FastAPI()
-with open("./data/scraped_data.json") as f:
+with open(scraped_data_json) as f:
     scraped = json.load(f)
     # TODO make it work for every coin
-    scraped = filter(lambda x: x["ticker"] == "BTC", scraped)
-    tweets = []
-    for el in scraped:
-        tweets += el["tweets"]
-    scraped = tweets
+    # scraped = filter(lambda x: x["ticker"] == "BTC", scraped)
+    # tweets = []
+    # for el in scraped:
+    #     tweets += el["tweets"]
+    # scraped = tweets
 
 
 @app.get("/top_users")
@@ -42,17 +45,18 @@ from datetime import datetime
 @app.get("/summarize_debate")
 def summarize_debate(u: str = "latest"):
     global scraped
+    ticker = scraped[0]["ticker"]
 
     if u == "latest":
-        tweet = scraped["tweets"][-1]
+        tweet = scraped[0]["tweets"][-1]
     else:
         tweets = list(filter(lambda x: x["user"]["username"] == u, scraped))
-        tweetssorted = sorted(
+        tweets_sorted = sorted(
             tweets,
             key=lambda x: datetime.strptime(x["created_at"], "%a %b %d %H:%M:%S %z %Y"),
             reverse=False,
         )
-        tweet = tweetssorted[-1]
+        tweet = tweets_sorted[-1]
     # enrich the the usernames with reputation
     for reply in tweet["replies"]:
         matching_users = top_users_df[top_users_df["author"] == reply["username"]]
@@ -66,8 +70,11 @@ def summarize_debate(u: str = "latest"):
         tweet["reputation"] = matching_usersauthor["reputation"].values[0]
     else:
         tweet["reputation"] = -1
+
     # TODO send to openai to put it together.
-    return tweet
+    summary = generate_summary(ticker)
+    larger_summary = generate_multiple_summaries(ticker)
+    return {"text": larger_summary}
 
 
 @app.get("/latest_posts/{username}")

@@ -1,0 +1,13 @@
+python-dotenv
+pandas
+numpy
+requests
+transformers
+torch
+networkx
+fastapi
+rapidfuzz
+ipykernel
+fastapi
+openai
+uvicorn
