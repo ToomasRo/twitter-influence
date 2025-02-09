@@ -40,7 +40,8 @@ def get_latest_top_posts(username):
     end_date = datetime.date.today().strftime('%Y-%m-%d')
     scraped_data = scrape_twitter(username, start_date, end_date)
     filtered_scraped_data = filter_data(scraped_data, start_date, end_date)
-    print(filtered_scraped_data)
+    return filtered_scraped_data
 
 if __name__ == "__main__":  
-    get_latest_top_posts("AlemzadehC")
+    latest_top = get_latest_top_posts("AlemzadehC")
+    print(latest_top)

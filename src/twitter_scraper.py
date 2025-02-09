@@ -8,7 +8,7 @@ import os
 dotenv.load_dotenv()
 
 url = "https://apis.datura.ai/twitter"
-api_key = os.getenv("DATURA_API_KEY")
+api_key = "dt_$LSO2gvfJtB6UENHrgs-SS1w0zfSKmAr1gfkbBRmTkIg"
 crypto_tickers = ["BTC", "ETH", "BNB", "SRP", "TORUS"]
 headers = {
     "Authorization": api_key,

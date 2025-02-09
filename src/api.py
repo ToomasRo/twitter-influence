@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 import pandas as pd
 import uvicorn
-import jsonify
 from get_5_latest import get_latest_top_posts
 
 url = "https://apis.datura.ai/twitter"
@@ -26,13 +25,13 @@ app = FastAPI()
 def get_top_users():
     return top_users_df.to_dict(orient="records")
 
-@app.get("/{username}/latest_posts")
+@app.get("/latest_posts/{username}")
 def get_latest_posts(username):
     try:
         tweets = get_latest_top_posts(username)
-        return jsonify(tweets)
+        return tweets
     except Exception as e:
-        return jsonify({"error": str(e)})
+        return {"error": str(e)}
     
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
