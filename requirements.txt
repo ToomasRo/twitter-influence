@@ -1,0 +1,11 @@
+python-dotenv==1.0.1
+pandas==2.2.1
+numpy==1.26.4
+requests==2.31.0
+transformers==4.37.2
+torch==2.4.1
+networkx==3.2.1 
+fastapi==0.115.0
+rapidfuzz==3.12.1
+ipykernel==6.29
+fastapi[standard]
