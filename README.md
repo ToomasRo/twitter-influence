@@ -64,7 +64,13 @@ These scraped daily top tweets for each ticker, containing its top replies are s
 
 For analyzing the sentiment of the tweets (in scraped_data.json), we use cardiffnlp’s twitter-roberta-base-sentiment model.If the sentiment detected in the tweet matches the market movement (ie. positive sentiment && market going up), then we give it a good score. If there is a mismatch, we give it a bad score. The same logic is applied to the reptiles, where the diverse opinions are rewarded with a good score.
 
-## Scoring Algorithm
+We use factors including the following: 
+reputation: a user’s reputation is a combination of final score given by combining norm_engagement, accuracy, and debate_quality
+norm_engagement: engagement is a normalized score for the reply_count, like_count, and retweet_count
+accuracy: taken from sentiment analysis
+debate_quality: reflects the quality and diversity of the debate, for instance no replies result in a score of 0, while higher debate_quality scores result from a larger number of replies and more vibrant debate.
+
+The users are ranked and stored in reputation_data.csv along with their respective reputation,engagement,accuracy,debate_quality scores.
 
 ## Debate Summariser
 
